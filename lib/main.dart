@@ -10,15 +10,38 @@ import 'providers/auth_provider.dart';
 import 'providers/chat_provider.dart';
 import 'providers/swipe_provider.dart';
 import 'providers/hangout_provider.dart';
+import 'providers/map_provider.dart';
+import 'providers/feedback_provider.dart';
 import 'utils/location_helper.dart';
+import 'services/notification_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Set preferred orientations
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  
+  // Initialize services
+  await _initializeServices();
+  
   runApp(const ConnectSphereApp());
+}
+
+Future<void> _initializeServices() async {
+  try {
+    // Initialize notification service
+    await NotificationService.initialize();
+    
+    // Initialize location helper
+    await LocationHelper.requestPermission();
+    
+    print('Services initialized successfully');
+  } catch (e) {
+    print('Error initializing services: $e');
+  }
 }
 
 class ConnectSphereApp extends StatelessWidget {
@@ -32,6 +55,8 @@ class ConnectSphereApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => SwipeProvider()),
         ChangeNotifierProvider(create: (_) => HangoutProvider()),
+        ChangeNotifierProvider(create: (_) => MapProvider()),
+        ChangeNotifierProvider(create: (_) => FeedbackProvider()),
       ],
       child: Consumer<AuthProvider>(
         builder: (context, authProvider, _) {

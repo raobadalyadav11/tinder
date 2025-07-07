@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Tinder</string>
+	<string>ConnectSphere</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>tinder</string>
+	<string>connectsphere</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,5 +45,62 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Camera Permission -->
+	<key>NSCameraUsageDescription</key>
+	<string>ConnectSphere needs camera access to take profile photos and share moments with matches.</string>
+	
+	<!-- Photo Library Permission -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ConnectSphere needs photo library access to select and upload profile pictures.</string>
+	
+	<!-- Location Permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ConnectSphere uses your location to find matches nearby and show distance to other users.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>ConnectSphere uses your location to find matches nearby and notify you when friends are close.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>ConnectSphere uses your location to provide proximity alerts when your matches are nearby.</string>
+	
+	<!-- Contacts Permission -->
+	<key>NSContactsUsageDescription</key>
+	<string>ConnectSphere can access your contacts to help you find friends who are already using the app.</string>
+	
+	<!-- Microphone Permission -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ConnectSphere needs microphone access to record and send voice messages to your matches.</string>
+	
+	<!-- Bluetooth Permission -->
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>ConnectSphere uses Bluetooth to enhance proximity detection and improve matching accuracy.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>ConnectSphere uses Bluetooth to detect nearby users and improve location-based features.</string>
+	
+	<!-- Motion Permission -->
+	<key>NSMotionUsageDescription</key>
+	<string>ConnectSphere uses motion data to enhance user experience and activity tracking.</string>
+	
+	<!-- Face ID Permission -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>ConnectSphere can use Face ID for secure and convenient app authentication.</string>
+	
+	<!-- Background Modes -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>background-fetch</string>
+		<string>background-processing</string>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
+	
+	<!-- App Transport Security -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	
 </dict>
 </plist>

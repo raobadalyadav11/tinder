@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import 'swipe_screen.dart';
-import '../chat/chat_list_screen.dart';
+import '../matches/matches_screen.dart';
 import '../profile/profile_screen.dart';
 import '../hangouts/hangout_list_screen.dart';
 import '../activities/activity_screen.dart';
+import '../map/nearby_users_map_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,10 +16,11 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  
+
   final List<Widget> _screens = [
     const SwipeScreen(),
-    const ChatListScreen(),
+    const MatchesScreen(),
+    const NearbyUsersMapScreen(),
     const HangoutListScreen(),
     const ActivityScreen(),
     const ProfileScreen(),
@@ -27,10 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
@@ -53,11 +52,22 @@ class _MainScreenState extends State<MainScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(0, Icons.favorite_outline, Icons.favorite, 'Discover'),
-              _buildNavItem(1, Icons.chat_bubble_outline, Icons.chat_bubble, 'Chats'),
-              _buildNavItem(2, Icons.event_outlined, Icons.event, 'Hangouts'),
-              _buildNavItem(3, Icons.explore_outlined, Icons.explore, 'Activities'),
-              _buildNavItem(4, Icons.person_outline, Icons.person, 'Profile'),
+              _buildNavItem(
+                0,
+                Icons.favorite_outline,
+                Icons.favorite,
+                'Discover',
+              ),
+              _buildNavItem(1, Icons.people_outline, Icons.people, 'Matches'),
+              _buildNavItem(2, Icons.map_outlined, Icons.map, 'Map'),
+              _buildNavItem(3, Icons.event_outlined, Icons.event, 'Hangouts'),
+              _buildNavItem(
+                4,
+                Icons.explore_outlined,
+                Icons.explore,
+                'Activities',
+              ),
+              _buildNavItem(5, Icons.person_outline, Icons.person, 'Profile'),
             ],
           ),
         ),
@@ -65,16 +75,23 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildNavItem(int index, IconData inactiveIcon, IconData activeIcon, String label) {
+  Widget _buildNavItem(
+    int index,
+    IconData inactiveIcon,
+    IconData activeIcon,
+    String label,
+  ) {
     final isActive = _currentIndex == index;
-    
+
     return GestureDetector(
       onTap: () => setState(() => _currentIndex = index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? AppTheme.primaryColor.withOpacity(0.1) : Colors.transparent,
+          color: isActive
+              ? AppTheme.primaryColor.withOpacity(0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(

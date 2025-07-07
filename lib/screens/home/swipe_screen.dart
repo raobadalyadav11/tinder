@@ -132,21 +132,21 @@ class _SwipeScreenState extends State<SwipeScreen> with TickerProviderStateMixin
             icon: Icons.close,
             color: Colors.grey.shade400,
             size: 56,
-            onPressed: () => _cardController.previous(),
+            onPressed: () => _handleSwipeAction('pass'),
             animationController: _passAnimationController,
           ),
           _buildActionButton(
             icon: Icons.star,
             color: AppTheme.accentColor,
             size: 48,
-            onPressed: () => _cardController.next(),
+            onPressed: () => _handleSwipeAction('super_like'),
             animationController: _superLikeAnimationController,
           ),
           _buildActionButton(
             icon: Icons.favorite,
             color: AppTheme.primaryColor,
             size: 56,
-            onPressed: () => _cardController.next(),
+            onPressed: () => _handleSwipeAction('like'),
             animationController: _likeAnimationController,
           ),
         ],
@@ -205,6 +205,43 @@ class _SwipeScreenState extends State<SwipeScreen> with TickerProviderStateMixin
     } else {
       _showFeedback('Super Like!', Icons.star, AppTheme.accentColor);
       _checkForMatch();
+    }
+  }
+
+  void _handleSwipeAction(String action) async {
+    final swipeProvider = Provider.of<SwipeProvider>(context, listen: false);
+    
+    try {
+      bool isMatch = false;
+      
+      switch (action) {
+        case 'like':
+          isMatch = await swipeProvider.likeUser();
+          _showFeedback('Liked', Icons.favorite, AppTheme.primaryColor);
+          break;
+        case 'pass':
+          await swipeProvider.passUser();
+          _showFeedback('Passed', Icons.close, Colors.grey);
+          break;
+        case 'super_like':
+          isMatch = await swipeProvider.superLikeUser();
+          _showFeedback('Super Like!', Icons.star, AppTheme.accentColor);
+          break;
+      }
+      
+      if (isMatch) {
+        _showMatchDialog();
+        NotificationService.showMatchNotification('Emma', 'avatar_url');
+      }
+      
+      _cardController.next();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Action failed: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

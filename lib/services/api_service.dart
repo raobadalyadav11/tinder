@@ -152,6 +152,83 @@ class ApiService {
     return List<Map<String, dynamic>>.from(data['activities']);
   }
 
+  // Map endpoints
+  static Future<List<UserModel>> getNearbyUsers(double lat, double lng, double radius) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/users/nearby?lat=$lat&lng=$lng&radius=$radius'),
+      headers: _headers,
+    );
+    final data = _handleResponse(response);
+    return (data['users'] as List).map((json) => UserModel.fromJson(json)).toList();
+  }
+
+  // Feedback endpoints
+  static Future<Map<String, dynamic>> submitFeedback(Map<String, dynamic> feedbackData) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/feedback/submit'),
+      headers: _headers,
+      body: jsonEncode(feedbackData),
+    );
+    return _handleResponse(response);
+  }
+
+  static Future<Map<String, dynamic>> reportUser(Map<String, dynamic> reportData) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/safety/report'),
+      headers: _headers,
+      body: jsonEncode(reportData),
+    );
+    return _handleResponse(response);
+  }
+
+  static Future<Map<String, dynamic>> blockUser(String userId) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/safety/block'),
+      headers: _headers,
+      body: jsonEncode({'userId': userId}),
+    );
+    return _handleResponse(response);
+  }
+
+  // Search endpoints
+  static Future<List<UserModel>> searchUsers(String query) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/search/users?q=$query'),
+      headers: _headers,
+    );
+    final data = _handleResponse(response);
+    return (data['users'] as List).map((json) => UserModel.fromJson(json)).toList();
+  }
+
+  // Photo upload
+  static Future<Map<String, dynamic>> uploadPhoto(String filePath) async {
+    final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/profile/upload-photo'));
+    request.headers.addAll(_headers);
+    request.files.add(await http.MultipartFile.fromPath('photo', filePath));
+    
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    return _handleResponse(response);
+  }
+
+  // Settings endpoints
+  static Future<Map<String, dynamic>> updateSettings(Map<String, dynamic> settings) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/settings/update'),
+      headers: _headers,
+      body: jsonEncode(settings),
+    );
+    return _handleResponse(response);
+  }
+
+  static Future<Map<String, dynamic>> getSettings() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/settings'),
+      headers: _headers,
+    );
+    return _handleResponse(response);
+  }
+
   static Future<Map<String, dynamic>> proposeActivity(String activityId, List<String> userIds, String message) async {
     final response = await http.post(
       Uri.parse('$baseUrl/activity/propose'),
