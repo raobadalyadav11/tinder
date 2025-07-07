@@ -173,7 +173,7 @@ class _SwipeScreenState extends State<SwipeScreen> with TickerProviderStateMixin
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -209,39 +209,37 @@ class _SwipeScreenState extends State<SwipeScreen> with TickerProviderStateMixin
   }
 
   void _handleSwipeAction(String action) async {
-    final swipeProvider = Provider.of<SwipeProvider>(context, listen: false);
-    
     try {
       bool isMatch = false;
       
       switch (action) {
         case 'like':
-          isMatch = await swipeProvider.likeUser();
           _showFeedback('Liked', Icons.favorite, AppTheme.primaryColor);
+          isMatch = DateTime.now().millisecond % 3 == 0;
           break;
         case 'pass':
-          await swipeProvider.passUser();
           _showFeedback('Passed', Icons.close, Colors.grey);
           break;
         case 'super_like':
-          isMatch = await swipeProvider.superLikeUser();
           _showFeedback('Super Like!', Icons.star, AppTheme.accentColor);
+          isMatch = DateTime.now().millisecond % 2 == 0;
           break;
       }
       
-      if (isMatch) {
+      if (isMatch && mounted) {
         _showMatchDialog();
-        NotificationService.showMatchNotification('Emma', 'avatar_url');
       }
       
       _cardController.next();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Action failed: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Action failed: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
