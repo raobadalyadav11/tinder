@@ -12,17 +12,18 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: AppTheme.primaryColor.withOpacity(0.2),
+            blurRadius: 25,
+            offset: const Offset(0, 12),
+            spreadRadius: 3,
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30),
         child: Stack(
           children: [
             _buildImage(),
@@ -41,15 +42,19 @@ class UserCard extends StatelessWidget {
         imageUrl: user['images'][0],
         fit: BoxFit.cover,
         placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
+          baseColor: AppTheme.textTertiary.withOpacity(0.3),
+          highlightColor: AppTheme.textTertiary.withOpacity(0.1),
           child: Container(
             color: Colors.white,
           ),
         ),
         errorWidget: (context, url, error) => Container(
-          color: Colors.grey.shade200,
-          child: const Icon(Icons.person, size: 100, color: Colors.grey),
+          color: AppTheme.backgroundColor,
+          child: Icon(
+            Icons.person, 
+            size: 100, 
+            color: AppTheme.textTertiary,
+          ),
         ),
       ),
     );
@@ -65,9 +70,9 @@ class UserCard extends StatelessWidget {
             colors: [
               Colors.transparent,
               Colors.transparent,
-              Colors.black.withOpacity(0.7),
+              AppTheme.textPrimary.withOpacity(0.8),
             ],
-            stops: const [0.0, 0.5, 1.0],
+            stops: const [0.0, 0.4, 1.0],
           ),
         ),
       ),
@@ -80,7 +85,7 @@ class UserCard extends StatelessWidget {
       left: 0,
       right: 0,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -92,28 +97,30 @@ class UserCard extends StatelessWidget {
                     '${user['name']}, ${user['age']}',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white.withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white.withOpacity(0.3)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.location_on, color: Colors.white, size: 14),
+                      const Icon(Icons.location_on, color: Colors.white, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         user['distance'],
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -121,16 +128,17 @@ class UserCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Text(
               user['bio'],
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
+                height: 1.4,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             _buildInterestTags(),
           ],
         ),
@@ -142,22 +150,23 @@ class UserCard extends StatelessWidget {
     final interests = ['Coffee', 'Hiking', 'Photography', 'Travel'];
     
     return Wrap(
-      spacing: 8,
-      runSpacing: 8,
+      spacing: 10,
+      runSpacing: 10,
       children: interests.take(3).map((interest) {
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.3)),
+            color: Colors.white.withOpacity(0.25),
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(color: Colors.white.withOpacity(0.4)),
           ),
           child: Text(
             interest,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
             ),
           ),
         );
@@ -170,32 +179,35 @@ class UserCard extends StatelessWidget {
       children: [
         // Like indicator
         Positioned(
-          top: 50,
-          right: 20,
+          top: 60,
+          right: 24,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor,
-              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [AppTheme.primaryColor, AppTheme.primaryLight],
+              ),
+              borderRadius: BorderRadius.circular(25),
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.primaryColor.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
+                  color: AppTheme.primaryColor.withOpacity(0.4),
+                  blurRadius: 15,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.favorite, color: Colors.white, size: 16),
-                SizedBox(width: 4),
+                Icon(Icons.favorite, color: Colors.white, size: 18),
+                SizedBox(width: 6),
                 Text(
                   'LIKE',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
                   ),
                 ),
               ],
@@ -204,32 +216,33 @@ class UserCard extends StatelessWidget {
         ),
         // Pass indicator
         Positioned(
-          top: 50,
-          left: 20,
+          top: 60,
+          left: 24,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.grey.shade600,
-              borderRadius: BorderRadius.circular(20),
+              color: AppTheme.textSecondary,
+              borderRadius: BorderRadius.circular(25),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
+                  color: AppTheme.textSecondary.withOpacity(0.4),
+                  blurRadius: 15,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.close, color: Colors.white, size: 16),
-                SizedBox(width: 4),
+                Icon(Icons.close, color: Colors.white, size: 18),
+                SizedBox(width: 6),
                 Text(
                   'PASS',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
                   ),
                 ),
               ],
@@ -238,34 +251,37 @@ class UserCard extends StatelessWidget {
         ),
         // Super Like indicator
         Positioned(
-          top: 20,
+          top: 24,
           left: 0,
           right: 0,
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
-                color: AppTheme.accentColor,
-                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [AppTheme.accentColor, AppTheme.accentLight],
+                ),
+                borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: AppTheme.accentColor.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
+                    color: AppTheme.accentColor.withOpacity(0.4),
+                    blurRadius: 15,
+                    offset: const Offset(0, 6),
                   ),
                 ],
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.star, color: Colors.white, size: 16),
-                  SizedBox(width: 4),
+                  Icon(Icons.star, color: Colors.white, size: 18),
+                  SizedBox(width: 6),
                   Text(
                     'SUPER LIKE',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
                     ),
                   ),
                 ],

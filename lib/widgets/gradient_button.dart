@@ -29,25 +29,26 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: gradientColors ?? [AppTheme.primaryColor, AppTheme.primaryLight],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(height / 2),
         boxShadow: [
           BoxShadow(
-            color: (gradientColors?.first ?? AppTheme.primaryColor).withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+            color: (gradientColors?.first ?? AppTheme.primaryColor).withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+            spreadRadius: 2,
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(height / 2),
           onTap: isLoading ? null : onPressed,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -63,7 +64,7 @@ class GradientButton extends StatelessWidget {
                 else ...[
                   if (icon != null) ...[
                     Icon(icon, color: Colors.white, size: 20),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 12),
                   ],
                   Text(
                     text,
@@ -71,6 +72,7 @@ class GradientButton extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ],

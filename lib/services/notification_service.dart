@@ -1,19 +1,21 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/material.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _notifications =
+      FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
 
   static Future<void> initialize() async {
     if (_initialized) return;
 
-    const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
+    const AndroidInitializationSettings androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings iosSettings =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
 
     const InitializationSettings settings = InitializationSettings(
       android: androidSettings,
@@ -30,35 +32,46 @@ class NotificationService {
 
   static Future<bool> requestPermissions() async {
     final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-        _notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+        _notifications
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
 
     if (androidImplementation != null) {
-      return await androidImplementation.requestNotificationsPermission() ?? false;
+      return await androidImplementation.requestNotificationsPermission() ??
+          false;
     }
 
-    final DarwinFlutterLocalNotificationsPlugin? iosImplementation =
-        _notifications.resolvePlatformSpecificImplementation<DarwinFlutterLocalNotificationsPlugin>();
+    final IOSFlutterLocalNotificationsPlugin? iosImplementation = _notifications
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >();
 
     if (iosImplementation != null) {
       return await iosImplementation.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      ) ?? false;
+            alert: true,
+            badge: true,
+            sound: true,
+          ) ??
+          false;
     }
 
     return false;
   }
 
-  static Future<void> showMatchNotification(String userName, String userImage) async {
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'matches',
-      'New Matches',
-      channelDescription: 'Notifications for new matches',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
-    );
+  static Future<void> showMatchNotification(
+    String userName,
+    String userImage,
+  ) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'matches',
+          'New Matches',
+          channelDescription: 'Notifications for new matches',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
       presentAlert: true,
@@ -80,15 +93,19 @@ class NotificationService {
     );
   }
 
-  static Future<void> showMessageNotification(String senderName, String message) async {
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'messages',
-      'New Messages',
-      channelDescription: 'Notifications for new messages',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
-    );
+  static Future<void> showMessageNotification(
+    String senderName,
+    String message,
+  ) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'messages',
+          'New Messages',
+          channelDescription: 'Notifications for new messages',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
       presentAlert: true,
@@ -110,16 +127,20 @@ class NotificationService {
     );
   }
 
-  static Future<void> showProximityNotification(String friendName, String distance) async {
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'proximity',
-      'Proximity Alerts',
-      channelDescription: 'Notifications when friends are nearby',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
-      sound: RawResourceAndroidNotificationSound('proximity_alert'),
-    );
+  static Future<void> showProximityNotification(
+    String friendName,
+    String distance,
+  ) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'proximity',
+          'Proximity Alerts',
+          channelDescription: 'Notifications when friends are nearby',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+          sound: RawResourceAndroidNotificationSound('proximity_alert'),
+        );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
       presentAlert: true,
@@ -142,15 +163,19 @@ class NotificationService {
     );
   }
 
-  static Future<void> showHangoutNotification(String title, String message) async {
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'hangouts',
-      'Hangout Updates',
-      channelDescription: 'Notifications for hangout events',
-      importance: Importance.high,
-      priority: Priority.high,
-      icon: '@mipmap/ic_launcher',
-    );
+  static Future<void> showHangoutNotification(
+    String title,
+    String message,
+  ) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'hangouts',
+          'Hangout Updates',
+          channelDescription: 'Notifications for hangout events',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
       presentAlert: true,
